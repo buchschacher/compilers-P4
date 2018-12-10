@@ -35,8 +35,8 @@ void codeGen(node_t *node)
 		// Initialize identifier variables
 		for (set<string>::iterator it = vars.begin(); it != vars.end(); ++it)
 		{
-			string var = *it;
-			fprintf(fout, "%s", var.c_str());
+			//string var = *it;
+			fprintf(fout, "%s", it->c_str());
 			//fprintf(fout, "%s 0\n", var.c_str());
 		}
 
