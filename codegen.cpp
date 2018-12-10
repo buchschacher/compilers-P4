@@ -3,14 +3,16 @@
 #include <cstring>
 #include <string>
 #include <deque>
+#include <set>
 #include "token.h"
 #include "node.h"
 #include "main.h"
+using namespace std;
 
 static int n = 0;
 static int m = 0;
 char * templ = (char *) malloc(sizeof(char) * 4);
-using namespace std;
+set<string> vars;
 
 
 /* perform left to right traversal, and perform different actions depending on subtree and node visited */
@@ -25,14 +27,31 @@ void codeGen(node_t *node)
 		codeGen(node->child[1]);
 
 		fprintf(fout, "STOP\nOUT 0\n");
+
+		// Initialize temp variables
 		for (int i = 0; i < n; i++)
 			fprintf(fout, "T%d 0\n", i);
+
+		// Initialize identifier variables
+		for (set<string>::iterator it = vars.begin(); it != vars.end(); ++it)
+		{
+			string var = *it;
+			fprintf(fout, "%s", var.c_str());
+			//fprintf(fout, "%s 0\n", var.c_str());
+		}
+
+
+		printf("Target file generation OK\n");
 		return;
 	}
 	else if (node->label == varsN)
 	{
-		fprintf(fout, "LOAD %s\n", node->token[1].inst);
-		fprintf(fout, "STORE %s\n", node->token[0].inst);
+		char varDec[100];
+		sprintf(varDec, "%s %s\n", node->token[0].inst, node->token[1].inst);
+		vars.insert(varDec);
+		//vars.insert(node->token[0].inst);
+		//fprintf(fout, "LOAD %s\n", node->token[1].inst);
+		//fprintf(fout, "STORE %s\n", node->token[0].inst);
 		if (node->child[0] != NULL)
 			codeGen(node->child[0]);
 		return;
@@ -167,22 +186,28 @@ void codeGen(node_t *node)
 	{
 		if (node->token[0].type == LSTtk)
 		{
+			// Less than or equal too branch
 			if (node->token[1].type == EQUtk)
 				fprintf(fout, "BRPOS %s\n", templ);
+			// Less than branch
 			else
 				fprintf(fout, "BRZPOS %s\n", templ);
 		}
 		else if (node->token[0].type == GRTtk)
 		{
+			// Greater than or equal too branch
 			if (node->token[1].type == EQUtk)
 				fprintf(fout, "BRNEG %s\n", templ);
+			// Greater than branch
 			else
 				fprintf(fout, "BRZNEG %s\n", templ);
 		}
 		else if (node->token[0].type == EQUtk)
 		{
+			// Not equal branch
 			if (node->token[1].type == EQUtk)
 				fprintf(fout, "BRZERO %s\n", templ);
+			// Equal branch
 			else
 				fprintf(fout, "BRPOS %s\nBRNEG %s\n", templ, templ);
 		}

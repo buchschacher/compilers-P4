@@ -1,9 +1,12 @@
 void
-let x = 1 
+let x = 0 
 let y = 1
 begin
-  let x = 1
+  x = y:
+  print (x):
   begin
-    print ( x + y ) :
+    let q = 2
+    let r = 3
+    print (r):
   end
 end

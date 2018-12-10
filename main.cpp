@@ -32,8 +32,6 @@ int main(const int argc, char *argv[])
 		char outName[inNameLen];
 		sprintf(inName, "%s.fs18", argv[1]);
 		sprintf(outName, "%s.asm", argv[1]);
-		//strcpy(inName, argv[1]);
-		//strcat(inName, ".fs18");
 		
 		// Open file and call test scanner with file pointer
 		fp = fopen(inName, "r");
@@ -71,6 +69,7 @@ int main(const int argc, char *argv[])
 
 	// Generate virtmach code
 	codeGen(root);
+	fclose(fout);
 
 	return 0;
 }
