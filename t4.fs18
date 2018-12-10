@@ -1,0 +1,10 @@
+void
+let x = 0 
+let y = 5
+begin
+  iter ( x < y )
+    begin
+      print(x):
+      x = x + 1:
+    end
+end
