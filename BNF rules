@@ -1,0 +1,16 @@
+<program>   -->   void <vars> <block>
+<block>     -->   begin <vars> <stats> end
+<vars>      -->   empty | let Identifier = Integer <vars> 
+<expr>      -->   <A> / <expr> | <A> * <expr> | <A>
+<A>         -->   <M> + <A> | <M> - <A> | <M>
+<M>         -->   - <M> | <R>
+<R>         -->   ( <expr> ) | Identifier | Integer
+<stats>     -->   <stat> <mStat>
+<mStat>     -->   empty | <stat> <mStat>
+<stat>      -->   <in> | <out> | <block> | <if> | <loop> | <assign>
+<in>        -->   read ( Identifier ) : 
+<out>       -->   print ( <expr> ) :
+<if>        -->   cond ( <expr> <RO> <expr> ) <stat>
+<loop>      -->   iter ( <expr> <RO> <expr> ) <stat>
+<assign>    -->   Identifier = <expr> : 
+<RO>        -->   < | < = | > | > = | = = | = 
